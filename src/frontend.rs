@@ -1,8 +1,5 @@
-use crate::{
-    backend,
-};
-
-use std::io::{self};
+use crate::backend;
+use crate::data::url;
 
 use ratatui::{
     buffer::Buffer,
@@ -16,6 +13,7 @@ use ratatui::{
 };
 
 use tui_scrollview::{ScrollView, ScrollViewState};
+use std::io::{self, stdout, Stdout};
 
 #[derive(Debug, Default, Clone)]
 pub struct App {
@@ -32,11 +30,13 @@ enum AppState {
 }
 
 impl App {
-    pub async fn new(mut url: String) -> App {
-        let content: String = backend::mk_req(url).await.expect("Async shat itself");
+    pub async fn new() -> App {
+        let mut data_url = url.lock().unwrap();
+        let content: String = backend::make_request_gemini(data_url.clone()).await.expect("If you are seeing this error, there is likely an issue with frontend communicating with the backend");
         App {   
             text: content,
             ..Default::default()
+
         }
     }
 

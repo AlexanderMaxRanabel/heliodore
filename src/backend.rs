@@ -1,13 +1,19 @@
 use trotter::{Actor, UserAgent};
+use crate::data::url;
 
-pub async fn mk_req(mut url: String) -> anyhow::Result<String> {
-    if !url.ends_with("/") {
-        url = format!("{}/", url);
+pub async fn make_request_gemini(mut gemini_url: String) -> anyhow::Result<String> {
+    if !gemini_url.ends_with("/") {
+        gemini_url = format!("{}/", gemini_url);
     }
 
     let requester = Actor::default().user_agent(UserAgent::Archiver);
 
-    let response = requester.get(url).await?.gemtext()?;
+    let response = requester.get(gemini_url).await?.gemtext()?;
 
     Ok(response)
+}
+
+pub fn set_string(new_value: String) {
+    let mut data = url.lock().unwrap();
+    *data = new_value;
 }

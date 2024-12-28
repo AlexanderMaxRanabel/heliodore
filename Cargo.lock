@@ -380,10 +380,10 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "crossterm",
+ "once_cell",
  "ratatui",
  "tokio",
  "trotter",
- "tui-menu",
  "tui-scrollview",
 ]
 
@@ -1180,15 +1180,6 @@ dependencies = [
  "url",
  "urlencoding",
  "wildmatch",
-]
-
-[[package]]
-name = "tui-menu"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5165784d84bca6340bcb189960dcd63136faf19404ebdf420da05ab7fce55277"
-dependencies = [
- "ratatui",
 ]
 
 [[package]]

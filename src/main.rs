@@ -1,5 +1,6 @@
 mod frontend;
 mod backend;
+mod data;
 
 use std::{env, io::{self}};
 
@@ -24,8 +25,10 @@ async fn main() -> Result<(), anyhow::Error> {
         println!("No url was provided");
         std::process::exit(1);
     });
-    let result = frontend::App::new(url_normal.to_string()).await.run(terminal); 
+
+    backend::set_string(url_normal.to_string());    
+
+    let result = frontend::App::new().await.run(terminal); 
     ratatui::restore();
     result
 }
-        
