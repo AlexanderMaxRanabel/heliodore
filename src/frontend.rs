@@ -64,7 +64,6 @@ impl App {
             let mut scroll_view = ScrollView::new(size);
             let paragraph = Paragraph::new(self.text.clone()).wrap(Wrap::default());
             scroll_view.render_widget(paragraph, scroll_view.area());
-
             frame.render_stateful_widget(scroll_view, area, &mut self.scroll_view_state);
 
         })?;
@@ -74,11 +73,12 @@ impl App {
     pub fn handle_events(&mut self) -> anyhow::Result<()> {
         use KeyCode::*;
         match event::read()? {
-
             Event::Key(key) if key.kind == KeyEventKind::Press => match key.code {
                 Char('q') | Esc => self.quit(),
                 Char('h') | Left => self.scroll_view_state.scroll_left(),
                 Char('l') | Right => self.scroll_view_state.scroll_right(),
+                Char('j') | Up => self.scroll_view_state.scroll_page_up(),
+                Char('k') | Down => self.scroll_view_state.scroll_page_down(),
                 _ => (),
             },
             _ => {}

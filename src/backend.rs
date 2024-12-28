@@ -5,7 +5,7 @@ pub async fn mk_req(mut url: String) -> anyhow::Result<String> {
         url = format!("{}/", url);
     }
 
-    let requester = Actor::default().user_agent(UserAgent::Webproxy);
+    let requester = Actor::default().user_agent(UserAgent::Archiver);
 
     let response = requester.get(url).await?.gemtext()?;
 
