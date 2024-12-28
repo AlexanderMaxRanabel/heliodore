@@ -1,4 +1,4 @@
-# Helion - Gemini Browser (TUI)
+# Heliodore - Gemini Browser (TUI)
 
 Helion is a terminal-based Gemini protocol browser built with Rust. It provides a minimalist and fast browsing experience for the Gemini protocol, designed for users who prefer working in the terminal.
 
@@ -11,12 +11,12 @@ Helion is a terminal-based Gemini protocol browser built with Rust. It provides 
 
 ## Installation
 
-To install Helion, follow these steps:
+To install Heliodore, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/AlexanderMaxRanabel/helion.git
-   cd helion
+   git clone https://github.com/AlexanderMaxRanabel/heliodore.git
+   cd heliodore
    ```
 
 2. Build the project:
@@ -26,7 +26,7 @@ To install Helion, follow these steps:
 
 3. Run the browser:
    ```bash
-   ./target/release/helion <gemini_url>
+   ./target/release/heliodore <gemini_url>
    ```
 
 ## Contributing
@@ -35,4 +35,4 @@ Feel free to fork the repository and submit pull requests. Issues and feature re
 
 ## License
 
-Helion is licensed under the **AGPL-3.0 License**. See the [LICENSE](./LICENSE) file for more details.
+Heliodore is licensed under the **AGPL-3.0 License**. See the [LICENSE](./LICENSE) file for more details.
