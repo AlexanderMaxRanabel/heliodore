@@ -1,8 +1,11 @@
-mod frontend;
 mod backend;
 mod data;
+mod frontend;
 
-use std::{env, io::{self}};
+use std::{
+    env,
+    io::{self},
+};
 
 use ratatui::{
     buffer::Buffer,
@@ -10,7 +13,6 @@ use ratatui::{
     layout::{Constraint, Direction, Layout, Rect, Size},
     style::{palette::tailwind, Color, Stylize},
     text::{Line, Text},
-
     widgets::*,
     DefaultTerminal,
 };
@@ -26,9 +28,9 @@ async fn main() -> Result<(), anyhow::Error> {
         std::process::exit(1);
     });
 
-    backend::set_string(url_normal.to_string());    
+    backend::set_string(url_normal.to_string());
 
-    let result = frontend::App::new().await.run(terminal); 
+    let result = frontend::App::new().await.run(terminal);
     ratatui::restore();
     result
 }

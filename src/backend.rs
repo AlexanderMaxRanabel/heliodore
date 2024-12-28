@@ -1,5 +1,5 @@
-use trotter::{Actor, UserAgent};
 use crate::data::url;
+use trotter::{Actor, UserAgent};
 
 pub async fn make_request_gemini(mut gemini_url: String) -> anyhow::Result<String> {
     if !gemini_url.ends_with("/") {
