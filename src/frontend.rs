@@ -1,17 +1,14 @@
 use crate::backend;
-use crate::data::url;
+use crate::data::*;
 
 use ratatui::{
-    buffer::Buffer,
-    crossterm::event::{self, Event, KeyCode, KeyEventKind},
-    layout::{Constraint, Direction, Layout, Rect, Size},
-    style::{palette::tailwind, Color, Stylize},
-    text::{Line, Text},
+    crossterm::event::{self, Event, KeyCode, KeyEvent, KeyEventKind},
+    layout::Size,
     widgets::*,
     DefaultTerminal,
 };
 
-use std::io::{self, stdout, Stdout};
+use std::io::{self};
 use tui_scrollview::{ScrollView, ScrollViewState};
 
 #[derive(Debug, Default, Clone)]
@@ -30,18 +27,19 @@ enum AppState {
 
 impl App {
     pub async fn new() -> App {
-        let mut data_url = url.lock().unwrap();
-        let content: String = backend::make_request_gemini(data_url.clone()).await.expect("If you are seeing this error, there is likely an issue with frontend communicating with the backend");
-        App {
-            text: content,
+        let mut data_url = URL.lock().unwrap();
+        let mut data_content = CONTENT.lock().unwrap();
+        *data_content = backend::make_request_gemini(data_url.clone()).await.expect("If you are seeing this error, there is likely an issue with frontend communicating with the backend");
+        return App {
+            text: data_content, 
             ..Default::default()
         }
     }
 
-    pub fn run(&mut self, mut terminal: DefaultTerminal) -> anyhow::Result<()> {
+    pub async fn run(&mut self, mut terminal: DefaultTerminal) -> anyhow::Result<()> {
         while self.is_running() {
             self.draw(&mut terminal)?;
-            self.handle_events()?;
+            self.handle_events().await?;
         }
         Ok(())
     }
@@ -66,7 +64,7 @@ impl App {
         Ok(())
     }
 
-    pub fn handle_events(&mut self) -> anyhow::Result<()> {
+    pub async fn handle_events(&mut self) -> anyhow::Result<()> {
         use KeyCode::*;
 
         match event::read()? {
@@ -77,6 +75,25 @@ impl App {
 
                 Char('j') | Up => self.scroll_view_state.scroll_page_up(),
                 Char('k') | Down => self.scroll_view_state.scroll_page_down(),
+                Char('n') => {
+                    let mut local_url = String::new();
+                    while let Event::Key(KeyEvent { code, .. }) = event::read()? {
+                        match code {
+                            KeyCode::Enter => {
+                                break;
+                            }
+                            KeyCode::Char(c) => {
+                                local_url.push(c);
+                            }
+                            _ => {}
+                        }
+                    }
+
+                    backend::set_string_wrapper_url(local_url);
+                    let data_url = URL.lock().unwrap();
+                    let mut data_content = CONTENT.lock().unwrap();
+                    *data_content = backend::make_request_gemini(data_url.clone()).await.expect("If you are seeing this error, there is likely an issue with frontend communicating with the backend");
+                }
                 _ => (),
             },
 

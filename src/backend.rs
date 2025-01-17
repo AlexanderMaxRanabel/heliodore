@@ -1,4 +1,4 @@
-use crate::data::url;
+use crate::data::*;
 use trotter::{Actor, UserAgent};
 
 pub async fn make_request_gemini(mut gemini_url: String) -> anyhow::Result<String> {
@@ -7,13 +7,11 @@ pub async fn make_request_gemini(mut gemini_url: String) -> anyhow::Result<Strin
     }
 
     let requester = Actor::default().user_agent(UserAgent::Archiver);
-
     let response = requester.get(gemini_url).await?.gemtext()?;
-
     Ok(response)
 }
 
-pub fn set_string(new_value: String) {
-    let mut data = url.lock().unwrap();
+pub fn set_string_wrapper_url(new_value: String) {
+    let mut data = URL.lock().unwrap();
     *data = new_value;
 }
